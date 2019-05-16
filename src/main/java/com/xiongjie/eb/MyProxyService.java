@@ -11,9 +11,5 @@ import io.vertx.core.Vertx;
 @ProxyGen
 public interface MyProxyService {
 
-    static MyProxyService createProxy(Vertx vertx){
-        return new MyProxyServiceVertxEBProxy(vertx,"helloProxy");
-    }
-
     void sayHello(Handler<AsyncResult<String>> resultHandler);
 }

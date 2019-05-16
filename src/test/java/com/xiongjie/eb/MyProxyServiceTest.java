@@ -4,8 +4,10 @@ import io.vertx.core.CompositeFuture;
 import io.vertx.core.DeploymentOptions;
 import io.vertx.core.Future;
 import io.vertx.core.Vertx;
+import io.vertx.core.eventbus.DeliveryOptions;
 import io.vertx.ext.unit.TestContext;
 import io.vertx.ext.unit.junit.VertxUnitRunner;
+import io.vertx.serviceproxy.ServiceProxyBuilder;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -27,7 +29,10 @@ public class MyProxyServiceTest {
         vertx = Vertx.vertx();
         vertx.deployVerticle(MyproxyVerticle::new, new DeploymentOptions(), context.asyncAssertSuccess(ar -> {
             deploymentVerticleIds.add(ar);
-            myProxyService = MyProxyService.createProxy(vertx);
+            myProxyService = new ServiceProxyBuilder(vertx)
+                    .setAddress("helloProxy")
+                    .setOptions(new DeliveryOptions())
+                    .build(MyProxyService.class);
         }));
     }
 
